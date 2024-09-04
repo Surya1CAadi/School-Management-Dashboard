@@ -1012,8 +1012,8 @@ export const calendarEvents = [
   {
     title: "History",
     allDay: false,
-    start: new Date(2024, 8,4, 4, 0),
-    end: new Date(2024, 8,4, 4, 45),
+    start: new Date(2024, 8,4, 9, 0),
+    end: new Date(2024, 8,4, 9, 45),
   },
   {
     title: "English",

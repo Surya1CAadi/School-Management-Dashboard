@@ -3,37 +3,24 @@ import TableSearch from "@/components/TableSearch";
 import Table from "@/components/Table";
 import Image from "next/image";
 import Link from "next/link";
-import { role, parentsData } from "@/lib/data";
+import { role, subjectsData } from "@/lib/data";
 
-type Parent = {
+type Subject = {
     id: number;
     name: string;
-    students: string[];
-    email?:string;
-    phone: string;
-    address: string;
+    teachers: string[];
 };
 
 const columns = () => [
-    {
-        header: "Info",
-        accessor: "info",
-      },
       {
-        header: "Students Name",
-        accessor: "studentsname",
-        className: "hidden md:table-cell",
+        header: "Subject Name",
+        accessor: "subjectname",
       },
      
       {
-        header: "Phone",
-        accessor: "phone",
-        className: "hidden lg:table-cell",
-      },
-      {
-        header: "Address",
-        accessor: "address",
-        className: "hidden lg:table-cell",
+        header: "Teachers",
+        accessor: "teachers",
+        className: "hidden md:table-cell",
       },
       {
         header: "Actions",
@@ -43,18 +30,13 @@ const columns = () => [
 
 
 
-const ParentListPAge = () => {
-    const renderRow =(item:Parent)=>(
+const SubjectListPAge = () => {
+    const renderRow =(item:Subject)=>(
         <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-Apurplelight">
-            <td className="flex items-center gap-4 p-4">
-            <div className="flex flex-col">
-                <h3 className="font-semibold">{item.name}</h3>
-                <p className="text-xs text-gray-500">{item?.email}</p>
-            </div>
-            </td>
-            <td className="hidden md:table-cell">{item.students.join(",")}</td>
-            <td className="hidden lg:table-cell">{item.phone}</td>
-            <td className="hidden lg:table-cell">{item.address}</td>
+            <td className="flex items-center gap-4 p-4">{item.name}</td>
+            <td className="hidden lg:table-cell">{item.teachers.join(",")}</td>
+            
+            {/* <td className="hidden lg:table-cell">{item.teachers.join(",")}</td> */}
             <td >
                 <div className="flex items-center gap-2">
                     <Link href={"/list/teachers/${item.id}"}>
@@ -93,10 +75,10 @@ const ParentListPAge = () => {
                 </div>
             </div>
             {/* LIST */}
-            <Table columns={columns()} renderRow={renderRow} data={parentsData}/>
+            <Table columns={columns()} renderRow={renderRow} data={subjectsData}/>
             {/* PAGINATION  */}
             <Pagination />
         </div>
     );
 };
-export default ParentListPAge;
+export default SubjectListPAge;
