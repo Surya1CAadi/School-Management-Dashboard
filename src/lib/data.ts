@@ -334,52 +334,52 @@ export const subjectsData = [
   {
     id: 1,
     name: "Math",
-    teachers: ["Alice Phelps", "Russell Davidson"],
+    teachers: ["Aditya Maurya","Vanshika Gupta", "Vishal Singh"],
   },
   {
     id: 2,
     name: "English",
-    teachers: ["Manuel Becker", "Eddie Chavez"],
+    teachers: ["Shahnawaz Ahmad", "Abhishek Singh"],
   },
   {
     id: 3,
     name: "Physics",
-    teachers: ["Lola Newman", "Darrell Delgado"],
+    teachers: ["Anantesh Chauhan", "Dipanshu Sahu"],
   },
   {
     id: 4,
     name: "Chemistry",
-    teachers: ["Nathan Kelly", "Benjamin Snyder"],
+    teachers: [ "Vanshika Gupta","Sakshi Singh","Aman Kumar Maurya"],
   },
   {
     id: 5,
     name: "Biology",
-    teachers: ["Alma Benson", "Lina Collier"],
+    teachers: ["Devansh Gupta", "Shriyanshi Shrivastava"],
   },
   {
     id: 6,
     name: "History",
-    teachers: ["Hannah Bowman", "Betty Obrien"],
+    teachers: ["Shahnawaz Ahmad", "Abhishek Singh"],
   },
   {
     id: 7,
     name: "Geography",
-    teachers: ["Lora French", "Sue Brady"],
+    teachers: ["Sakshi Singh", "Rishita Shrivastava"],
   },
   {
     id: 8,
     name: "Art",
-    teachers: ["Harriet Alvarado", "Mayme Keller"],
+    teachers: ["Aditya Maurya", "Devansh Gupta"],
   },
   {
     id: 9,
-    name: "Music",
-    teachers: ["Gertrude Roy", "Rosa Singleton"],
+    name: "Computer",
+    teachers: ["Aditya Maurya","Abhishek Singh", "Jigyasu Saini"],
   },
   {
     id: 10,
     name: "Literature",
-    teachers: ["Effie Lynch", "Brett Flowers"],
+    teachers: [ "Rajita Singh","Anurag Singh Chauhan"],
   },
 ];
 
@@ -1070,5 +1070,117 @@ export const calendarEvents = [
     allDay: false,
     start: new Date(2024, 8, 6, 14, 0),
     end: new Date(2024, 8, 6, 14, 45),
+  },
+];
+
+export const messagesData = [
+  {
+      id: 1,
+      sender: "Mr. Smith",
+      date: "2024-09-01",
+      subject: "Welcome to the new school year",
+      preview: "Dear students, welcome back! We have some exciting plans for this year...",
+      content: "Dear students, welcome back! We have some exciting plans for this year, including new extracurricular activities and updated curriculum. Stay tuned for more details."
+  },
+  {
+      id: 2,
+      sender: "Ms. Johnson",
+      date: "2024-08-25",
+      subject: "Important: Science Lab Safety Rules",
+      preview: "Please make sure to review the new safety rules for the science lab. It's crucial to follow these guidelines...",
+      content: "Please make sure to review the new safety rules for the science lab. It's crucial to follow these guidelines to ensure everyone's safety. The rules are posted on the school website."
+  },
+  // Add more messages as needed
+];
+export const attendanceData = [
+  {
+    id: 1,
+    name: "John Doe",
+    class: "1B",
+    totalDays: 180,
+    daysPresent: 170,
+    presentPercent: 94.4, // (170/180) * 100
+    comments: "Excellent attendance throughout the year.",
+  },
+  {
+    id: 2,
+    name: "Jane Doe",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 165,
+    presentPercent: 91.7, // (165/180) * 100
+    comments: "Missed some days due to illness.",
+  },
+  {
+    id: 3,
+    name: "Mike Geller",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 160,
+    presentPercent: 88.9, // (160/180) * 100
+    comments: "Regularly late but has good attendance overall.",
+  },
+  {
+    id: 4,
+    name: "Jay French",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 150,
+    presentPercent: 83.3, // (150/180) * 100
+    comments: "Had frequent absences, needs improvement.",
+  },
+  {
+    id: 5,
+    name: "Jane Smith",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 175,
+    presentPercent: 97.2, // (175/180) * 100
+    comments: "Excellent attendance and punctuality.",
+  },
+  {
+    id: 6,
+    name: "Anna Santiago",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 172,
+    presentPercent: 95.6, // (172/180) * 100
+    comments: "Consistently present and engaged in class.",
+  },
+  {
+    id: 7,
+    name: "Allen Black",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 168,
+    presentPercent: 93.3, // (168/180) * 100
+    comments: "Good attendance, missed a few due to family reasons.",
+  },
+  {
+    id: 8,
+    name: "Ophelia Castro",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 160,
+    presentPercent: 88.9, // (160/180) * 100
+    comments: "Needs to improve attendance; missed several classes.",
+  },
+  {
+    id: 9,
+    name: "Derek Briggs",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 155,
+    presentPercent: 86.1, // (155/180) * 100
+    comments: "Attendance issues; missed classes without valid reasons.",
+  },
+  {
+    id: 10,
+    name: "John Glover",
+    class: "5A",
+    totalDays: 180,
+    daysPresent: 170,
+    presentPercent: 94.4, // (170/180) * 100
+    comments: "Good attendance; participated actively in class.",
   },
 ];

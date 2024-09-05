@@ -75,5 +75,3 @@ const Announcements = () => {
 };
 
 export default Announcements;
-
-// odd:border-t-Asky even:border-t-Apurple
