@@ -4,6 +4,7 @@ import Table from "@/components/Table";
 import Image from "next/image";
 import Link from "next/link";
 import { role, teachersData } from "@/lib/data";
+import FormModel from "@/components/FormModal";
 
 type Teacher = {
     id: number;
@@ -72,15 +73,18 @@ const TeacherListPage = () => {
             <td className="hidden lg:table-cell">{item.address}</td>
             <td className="">
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/teachers/${item.id}"}>
+                    <Link href={`/list/teachers/${item.id}`}>
                     <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
                         <Image src="/view.png" alt="" width={16} height={16}/>
                     </button>
                     </Link>
                     {role ==="admin" &&
-                    (<button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                        <Image src="/delete.png" alt="" width={16} height={16}/>
-                    </button>)}
+                    (
+                    // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
+                    //     <Image src="/delete.png" alt="" width={16} height={16}/>
+                    // </button>
+                    <FormModel table="teacher" type="delete" id={item.id}/>
+                )}
                 </div>
             </td>
         </tr>
@@ -94,15 +98,16 @@ const TeacherListPage = () => {
                     <TableSearch />
                     <div className="flex items-center gap-4 self-end">
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                            <Image src="/filter.png" alt="" width={14} height={14} />
+                            <Image src="/filter.png" alt="" width={16} height={16} />
                         </button>
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                            <Image src="/sort.png" alt="" width={14} height={14} />
+                            <Image src="/sort.png" alt="" width={16} height={16} />
                         </button>
-                        {role ==="admin" &&
-                    (<button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                            <Image src="/plus.png" alt="" width={14} height={14} />
-                        </button>
+                        {role ==="admin" &&(
+                    // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
+                    //         <Image src="/plus.png" alt="" width={16} height={16} />
+                    //     </button>
+                    <FormModel table="teacher" type="create"/>
                     )}
                     </div>
                 </div>

@@ -4,6 +4,7 @@ import Table from "@/components/Table";
 import Image from "next/image";
 import Link from "next/link";
 import { role, studentsData } from "@/lib/data";
+import FormModel from "@/components/FormModal";
 
 type Student = {
     id: number;
@@ -50,8 +51,9 @@ const columns = () => [
 
 
 const StudentListPage = () => {
-    const renderRow =(item:Student)=>(
-        <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-Apurplelight">
+    const renderRow =(item: Student)=>(
+        <tr key={item.id} 
+        className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-Apurplelight">
             <td className="flex items-center gap-4 p-4">
                 <Image src={item.photo} alt="" width={40} height={40} className="md:hidden xl:block w-10 h-10 rounded-full object-cover" />
             <div className="flex flex-col">
@@ -65,15 +67,18 @@ const StudentListPage = () => {
             <td className="hidden lg:table-cell">{item.address}</td>
             <td className="">
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/teachers/${item.id}"}>
+                <Link href={`/list/students/${item.id}`}>
                     <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
                         <Image src="/view.png" alt="" width={16} height={16}/>
                     </button>
-                    </Link>
+                </Link>
                     {role ==="admin" &&
-                    (<button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                        <Image src="/delete.png" alt="" width={16} height={16}/>
-                    </button>)}
+                    (
+                    // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
+                    //     <Image src="/delete.png" alt="" width={16} height={16}/>
+                    // </button>
+                    <FormModel table="student" type="delete" id={item.id}/>
+                )}
                 </div>
             </td>
         </tr>
@@ -87,15 +92,17 @@ const StudentListPage = () => {
                     <TableSearch />
                     <div className="flex items-center gap-4 self-end">
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                            <Image src="/filter.png" alt="" width={14} height={14} />
+                            <Image src="/filter.png" alt="" width={16} height={16} />
                         </button>
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                            <Image src="/sort.png" alt="" width={14} height={14} />
+                            <Image src="/sort.png" alt="" width={16} height={16} />
                         </button>
                         {role ==="admin" &&
-                    (<button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                            <Image src="/plus.png" alt="" width={14} height={14} />
-                        </button>
+                    (
+                    // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
+                    //         <Image src="/plus.png" alt="" width={16} height={16} />
+                    //     </button>
+                    <FormModel table="student" type="create"/>
                     )}
                     </div>
                 </div>

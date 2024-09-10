@@ -4,6 +4,7 @@ import Table from "@/components/Table";
 import Image from "next/image";
 import Link from "next/link";
 import { role,  resultsData } from "@/lib/data";
+import FormModel from "@/components/FormModal";
 
 type Result = {
     id: number;
@@ -61,8 +62,8 @@ const columns = () => [
 const ResultListPage = () => {
     const renderRow = (item: Result) => (
         <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-Apurplelight">
-            <td className="flex items-center gap-4 p-4">{item.subject}</td>
-            <td className="">{item.student}</td>
+            <td className="flex items-center gap-4 p-4 ">{item.subject}</td>
+            <td className="font-semibold">{item.student}</td>
             <td className="hidden md:table-cell">{item.score}</td>
             <td className="hidden lg:table-cell">{item.teacher}</td>
             <td className="hidden md:table-cell">{item.class}</td>
@@ -75,9 +76,12 @@ const ResultListPage = () => {
                         </button>
                     </Link>
                     {role === "admin" &&
-                        (<button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                            <Image src="/delete.png" alt="" width={16} height={16} />
-                        </button>)}
+                        (
+                        // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
+                        //     <Image src="/delete.png" alt="" width={16} height={16} />
+                        // </button>
+                        <FormModel table="result" type="delete" id={item.id}/>
+                    )}
                 </div>
             </td>
         </tr>
@@ -97,9 +101,11 @@ const ResultListPage = () => {
                             <Image src="/sort.png" alt="" width={14} height={14} />
                         </button>
                         {role === "admin" &&
-                            (<button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                                <Image src="/plus.png" alt="" width={14} height={14} />
-                            </button>
+                            (
+                            // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
+                            //     <Image src="/plus.png" alt="" width={14} height={14} />
+                            // </button>
+                            <FormModel table="result" type="create" />
                             )}
                     </div>
                 </div>
