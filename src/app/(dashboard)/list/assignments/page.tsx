@@ -14,63 +14,71 @@ type Assignments = {
     dueDate: string;
 };
 
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
+
+const columnAccess: Record<Role, string[]> = {
+    admin: ["subject", "class", "teacher", "dueDate", "action"],
+    teacher: ["subject", "class", "teacher", "dueDate"],
+    staff: ["subject", "class", "teacher", "dueDate"],
+    student: ["subject", "class", "teacher", "dueDate"],
+    parent: ["subject", "class", "teacher", "dueDate"],
+};
+
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
+
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
+
+    return [
+        {
+            header: "Subject",
+            accessor: "subject",
+        },
+        {
+            header: "Class",
+            accessor: "class",
+        },
+        {
+            header: "Teacher",
+            accessor: "teacher",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Due Date",
+            accessor: "dueDate",
+            className: "hidden md:table-cell",        
+        },
+        {
+            header: "Actions",
+            accessor: "action",
+        },
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
 
 
-const columns = () => [
-      {
-        header: "Subject",
-        accessor: "subject",
-        // className: "hidden lg:table-cell",
-      },
-     
-      {
-        header: "Class",
-        accessor: "class",
-      },
-      {
-        header: "Teacher",
-        accessor: "teacher",
-        className: "hidden md:table-cell",
-
-      },
-      {
-        header: "Due Date",
-        accessor: "dueDate",
-        className: "hidden md:table-cell",
-
-
-      },
-      {
-        header: "Actions",
-        accessor: "action",
-      },
-    ];
 
 
 
 const AssignnmentListPage = () => {
-    const renderRow =(item:Assignments)=>(
+    const renderRow = (item: Assignments) => (
         <tr key={item.id} className="border-b border-gray-200 even:bg-slate-50 text-sm hover:bg-Apurplelight">
             <td className="flex items-center gap-4 p-4">{item.subject}</td>
             <td className="font-semibold">{item.class}</td>
-            
+
             <td className="hidden md:table-cell">{item.teacher}</td>
             <td className="hidden md:table-cell">{item.dueDate}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                    <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                        <Image src="/edit.png" alt="" width={16} height={16}/>
-                    </button>
-                    </Link>
-                    {role ==="admin" &&
-                    (
-                    // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                    //     <Image src="/delete.png" alt="" width={16} height={16}/>
-                    // </button>
-                    <FormModel table="assignment" type="delete" id={item.id}/>
-
-                )}
+                    {role === "admin" &&
+                        (
+                            <>
+                                <FormModel table="assignment" type="update" data={item} />
+                                <FormModel table="assignment" type="delete" id={item.id} />
+                            </>
+                        )}
                 </div>
             </td>
         </tr>
@@ -89,18 +97,15 @@ const AssignnmentListPage = () => {
                         <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
                             <Image src="/sort.png" alt="" width={14} height={14} />
                         </button>
-                        {role ==="admin" &&
-                    (
-                    // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                    //         <Image src="/plus.png" alt="" width={14} height={14} />
-                    //     </button>
-                    <FormModel table="assignment" type="create"/>
-                    )}
+                        {role === "admin" &&
+                            (
+                                <FormModel table="assignment" type="create" />
+                            )}
                     </div>
                 </div>
             </div>
             {/* LIST */}
-            <Table columns={columns()} renderRow={renderRow} data={assignmentsData}/>
+            <Table columns={columns()} renderRow={renderRow} data={assignmentsData} />
             {/* PAGINATION  */}
             <Pagination />
         </div>

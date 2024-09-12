@@ -13,32 +13,47 @@ type Announcement = {
     date: string;
 };
 
-const columns = () => [
-    {
-        header: "Title",
-        accessor: "title",
-    },
-   
-    {
-        header: "Class",
-        accessor: "class",
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
 
-    },
+const columnAccess: Record<Role, string[]> = {
+    admin: ["title", "class", "date", "action"],
+    teacher: ["title", "class", "date"],
+    staff: ["title", "class", "date"],
+    student: ["title", "class", "date"],
+    parent: ["title", "class", "date"],
+};
+
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
+
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
+
+    return [
+        {
+            header: "Title",
+            accessor: "title",
+        },
+
+        {
+            header: "Class",
+            accessor: "class",
     
-    {
-        header: "Date",
-        accessor: "date",
-        className: "hidden md:table-cell",
-    },
-   
-   
-   
-    {
-        header: "Actions",
-        accessor: "action",
-    },
-];
+        },
+        {
+            header: "Date",
+            accessor: "date",
+            className: "hidden md:table-cell",
+        },       
+        {
+            header: "Actions",
+            accessor: "action",
+        },
 
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
 
 
 const AnnouncementListPage = () => {
@@ -49,17 +64,11 @@ const AnnouncementListPage = () => {
             <td className="hidden md:table-cell">{item.date}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                        <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                            <Image src="/edit.png" alt="" width={16} height={16} />
-                        </button>
-                    </Link>
                     {role === "admin" &&
-                        (
-                        // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                        //     <Image src="/delete.png" alt="" width={16} height={16} />
-                        // </button>
+                        (<>
+                        <FormModel table="announcement" type="update" data={item}/>
                         <FormModel table="announcement" type="delete" id={item.id}/>
+                        </>
                     )}
                 </div>
             </td>

@@ -15,37 +15,55 @@ type Exam = {
 };
 
 
-const columns = () => [
-      {
-        header: "Subject",
-        accessor: "subject",
-        // className: "hidden lg:table-cell",
-      },
-     
-      {
-        header: "Class",
-        accessor: "class",
-        // className: "hidden md:table-cell",
-      },
-      {
-        header: "Teacher",
-        accessor: "teacher",
-        className: "hidden md:table-cell",
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
 
-      },
-      {
-        header: "Date",
-        accessor: "date",
-        className: "hidden md:table-cell",
+const columnAccess: Record<Role, string[]> = {
+    admin: ["subject", "class", "teacher", "date", "action"],
+    teacher: ["subject", "class", "teacher", "date"],
+    staff: ["subject", "class", "teacher", "date"],
+    student: ["subject", "class", "teacher", "date"],
+    parent: ["subject", "class", "teacher", "date"],
+};
 
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
 
-      },
-      {
-        header: "Actions",
-        accessor: "action",
-      },
-    ];
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
 
+    return [
+        {
+            header: "Subject",
+            accessor: "subject",
+            // className: "hidden lg:table-cell",
+          },
+         
+          {
+            header: "Class",
+            accessor: "class",
+            // className: "hidden md:table-cell",
+          },
+          {
+            header: "Teacher",
+            accessor: "teacher",
+            className: "hidden md:table-cell",
+    
+          },
+          {
+            header: "Date",
+            accessor: "date",
+            className: "hidden md:table-cell",
+    
+    
+          },
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
 
 
 const ExamsListPage = () => {
@@ -58,19 +76,12 @@ const ExamsListPage = () => {
             <td className="hidden md:table-cell">{item.date}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                    <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                        <Image src="/edit.png" alt="" width={16} height={16}/>
-                    </button>
-                    </Link>
-                    {role ==="admin" &&
-                    (
-                    // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                    //     <Image src="/delete.png" alt="" width={16} height={16}/>
-                    // </button>
-                    <FormModel table="exam" type="delete" id={item.id}/>
-
-                )}
+                {role === "admin" &&
+                        (<>
+                            <FormModel table="exam" type="update" data={item} />
+                            <FormModel table="exam" type="delete" id={item.id} />
+                        </>
+                        )}
                 </div>
             </td>
         </tr>
@@ -91,9 +102,6 @@ const ExamsListPage = () => {
                         </button>
                         {role ==="admin" &&
                     (
-                    // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                    //         <Image src="/plus.png" alt="" width={14} height={14} />
-                    //     </button>
                     <FormModel table="exam" type="create" />
 
                     )}

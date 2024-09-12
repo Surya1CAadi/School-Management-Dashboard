@@ -14,35 +14,56 @@ type Class = {
     grade: number;
 };
 
-const columns = () => [
-      {
-        header: "Class Name",
-        accessor: "classname",
-        // className: "hidden lg:table-cell",
-      },
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
+
+const columnAccess: Record<Role, string[]> = {
+    admin: ["classname", "capacity", "grade", "supervisor", "action"],
+    teacher: ["classname", "capacity", "grade", "supervisor"],
+    staff: ["classname", "capacity", "grade", "supervisor"],
+    student: ["classname", "capacity", "grade", "supervisor"],
+    parent: ["classname", "capacity", "grade", "supervisor"],
+};
+
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
+
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
+
+    return [
+        {
+            header: "Class Name",
+            accessor: "classname",
+            // className: "hidden lg:table-cell",
+          },
+         
+          {
+            header: "Capacity",
+            accessor: "capacity",
+            className: "hidden md:table-cell",
+          },
+          {
+            header: "Grade",
+            accessor: "grade",
+            className: "hidden md:table-cell",
+    
+          },
+          {
+            header: "Supervisor",
+            accessor: "supervisor",
+            // className: "hidden md:table-cell",
+    
+          },
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
      
-      {
-        header: "Capacity",
-        accessor: "capacity",
-        className: "hidden md:table-cell",
-      },
-      {
-        header: "Grade",
-        accessor: "grade",
-        className: "hidden md:table-cell",
-
-      },
-      {
-        header: "Supervisor",
-        accessor: "supervisor",
-        // className: "hidden md:table-cell",
-
-      },
-      {
-        header: "Actions",
-        accessor: "action",
-      },
-    ];
+   
 
 
 
@@ -56,19 +77,12 @@ const ClassesListPAge = () => {
             <td className="">{item.supervisor}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                    <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                        <Image src="/edit.png" alt="" width={16} height={16}/>
-                    </button>
-                    </Link>
-                    {role ==="admin" &&
-                    (
-                    // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                    //     <Image src="/delete.png" alt="" width={16} height={16}/>
-                    // </button>
-                    <FormModel table="class" type="delete" id={item.id}/>
-
-                )}
+                {role === "admin" &&
+                        (<>
+                            <FormModel table="class" type="update" data={item} />
+                            <FormModel table="class" type="delete" id={item.id} />
+                        </>
+                        )}
                 </div>
             </td>
         </tr>
@@ -89,9 +103,6 @@ const ClassesListPAge = () => {
                         </button>
                         {role ==="admin" &&
                     (
-                    // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                    //         <Image src="/plus.png" alt="" width={14} height={14} />
-                    //     </button>
                     <FormModel table="class" type="create" />
                     )}
                     </div>

@@ -14,44 +14,57 @@ type Events = {
     startTime: string;
     endTime: string;
 };
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
 
+const columnAccess: Record<Role, string[]> = {
+    admin: ["title", "class", "date", "startTime","endTime", "action"],
+    teacher: ["title", "class", "date", "startTime","endTime"],
+    staff: ["title", "class", "date", "startTime","endTime"],
+    student: ["title", "class", "date", "startTime","endTime"],
+    parent: ["title", "class", "date", "startTime","endTime"],
+};
 
-const columns = () => [
-    {
-        header: "Title",
-        accessor: "title",
-    },
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
 
-    {
-        header: "Class",
-        accessor: "class",
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
 
-    },
-
-    {
-        header: "Date",
-        accessor: "date",
-        className: "hidden md:table-cell",
-    },
-
-
-    {
-        header: "StartTime",
-        accessor: "startTime",
-        className: "hidden lg:table-cell",
-    },
-    {
-        header: "EndTime",
-        accessor: "endTime",
-        className: "hidden lg:table-cell",
-    },
-
-    {
-        header: "Actions",
-        accessor: "action",
-    },
-];
-
+    return [
+        {
+            header: "Title",
+            accessor: "title",
+        },
+    
+        {
+            header: "Class",
+            accessor: "class",
+    
+        },
+        {
+            header: "Date",
+            accessor: "date",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "StartTime",
+            accessor: "startTime",
+            className: "hidden lg:table-cell",
+        },
+        {
+            header: "EndTime",
+            accessor: "endTime",
+            className: "hidden lg:table-cell",
+        },
+        {
+            header: "Actions",
+            accessor: "action",
+        },
+       
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
 
 
 const EventListPage = () => {
@@ -64,18 +77,11 @@ const EventListPage = () => {
             <td className="hidden lg:table-cell">{item.endTime}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                        <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                            <Image src="/edit.png" alt="" width={16} height={16} />
-                        </button>
-                    </Link>
-                    {role === "admin" &&
-                        (
-                            // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                            //     <Image src="/delete.png" alt="" width={16} height={16} />
-                            // </button>
+                {role === "admin" &&
+                        (<>
+                            <FormModel table="event" type="update" data={item} />
                             <FormModel table="event" type="delete" id={item.id} />
-
+                        </>
                         )}
                 </div>
             </td>
@@ -97,9 +103,6 @@ const EventListPage = () => {
                         </button>
                         {role === "admin" &&
                             (
-                                // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                                //     <Image src="/plus.png" alt="" width={14} height={14} />
-                                // </button>
                                 <FormModel table="event" type="create" />
 
                             )}

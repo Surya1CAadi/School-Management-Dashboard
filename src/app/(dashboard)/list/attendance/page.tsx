@@ -16,42 +16,65 @@ type Attendance = {
     comments: string;
 };
 
-const columns = () => [
-    {
-        header: "Name",
-        accessor: "name",
-    },
-    {
-        header: "Class",
-        accessor: "class",
-    },
-    {
-        header: "Total Days",
-        accessor: "totalDays",
-        className: "hidden md:table-cell",
-    },
-    {
-        header: "Days Present",
-        accessor: "daysPresent",
-        className: "hidden lg:table-cell",
 
-    },
-    {
-        header: "Present (%)",
-        accessor: "presentPercent",
-        className: "hidden md:table-cell",
-        // Add percentage of attendance
-    },
-    {
-        header: "Comments",
-        accessor: "comments",
-        className: "hidden lg:table-cell",
-    },
-    {
-        header: "Actions",
-        accessor: "action",
-    },
-];
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
+
+const columnAccess: Record<Role, string[]> = {
+    admin: ["name", "class", "totalDays", "daysPresent","presentPercent","comments", "action"],
+    teacher: ["name", "class", "totalDays", "daysPresent","presentPercent","comments"],
+    staff: ["name", "class", "totalDays", "daysPresent","presentPercent","comments"],
+    student: ["name", "class", "totalDays", "daysPresent","presentPercent","comments"],
+    parent: ["name", "class", "totalDays", "daysPresent","presentPercent","comments"],
+};
+
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
+
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
+
+    return [
+        {
+            header: "Name",
+            accessor: "name",
+        },
+        {
+            header: "Class",
+            accessor: "class",
+        },
+        {
+            header: "Total Days",
+            accessor: "totalDays",
+            className: "hidden md:table-cell",
+        },
+        {
+            header: "Days Present",
+            accessor: "daysPresent",
+            className: "hidden lg:table-cell",
+    
+        },
+        {
+            header: "Present (%)",
+            accessor: "presentPercent",
+            className: "hidden md:table-cell",
+            // Add percentage of attendance
+        },
+        {
+            header: "Comments",
+            accessor: "comments",
+            className: "hidden lg:table-cell",
+        },
+        {
+            header: "Actions",
+            accessor: "action",
+        },
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
+
+   
+
 
 
 const AttendanceListPage = () => {
@@ -65,19 +88,12 @@ const AttendanceListPage = () => {
             <td className="hidden lg:table-cell">{item.comments}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                        <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                            <Image src="/edit.png" alt="" width={16} height={16} />
-                        </button>
-                    </Link>
-                    {role === "admin" &&
-                    (
-                        // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                        //     <Image src="/delete.png" alt="" width={16} height={16} />
-                        // </button>
-                        <FormModel table="attendance" type="delete" id={item.id}/>
-
-                    )}
+                {role === "admin" &&
+                        (<>
+                            <FormModel table="attendance" type="update" data={item} />
+                            <FormModel table="attendance" type="delete" id={item.id} />
+                        </>
+                        )}
                 </div>
             </td>
         </tr>

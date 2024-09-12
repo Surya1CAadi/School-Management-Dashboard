@@ -14,30 +14,47 @@ type Lessons = {
 };
 
 
-const columns = () => [
-      {
-        header: "Subject Name",
-        accessor: "subjectname",
-      },
-     
-      {
-        header: "Class",
-        accessor: "class",
-      },
-     
-      {
-        header: "Teacher",
-        accessor: "teacher",
-        className: "hidden md:table-cell",
+// Define possible roles as a union type
+type Role = 'admin' | 'teacher' | 'staff' | 'student' | 'parent';
 
-      },
-      {
-        header: "Actions",
-        accessor: "action",
-      },
-    ];
+const columnAccess: Record<Role, string[]> = {
+    admin: ["subjectname", "class", "teacher", "action"],
+    teacher: ["subjectname", "class", "teacher"],
+    staff: ["subjectname", "class", "teacher"],
+    student: ["subjectname", "class", "teacher"],
+    parent: ["subjectname", "class", "teacher"],
+};
 
+// Ensure `role` is of type `Role`
+const currentRole: Role = role as Role;
 
+// Define columns with role-based access
+const columns = () => {
+    const accessibleColumns = columnAccess[currentRole] || []; // Get columns accessible by the role
+
+    return [
+        {
+            header: "Subject Name",
+            accessor: "subjectname",
+          },
+         
+          {
+            header: "Class",
+            accessor: "class",
+          },
+         
+          {
+            header: "Teacher",
+            accessor: "teacher",
+            className: "hidden md:table-cell",
+    
+          },
+          {
+            header: "Actions",
+            accessor: "action",
+          },
+    ].filter(column => accessibleColumns.includes(column.accessor));
+};
 
 const LessonsListPAge = () => {
     const renderRow =(item:Lessons)=>(
@@ -47,19 +64,12 @@ const LessonsListPAge = () => {
             <td className="hidden md:table-cell">{item.teacher}</td>
             <td >
                 <div className="flex items-center gap-2">
-                    <Link href={"/list/Capacity/${item.id}"}>
-                    <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Asky">
-                        <Image src="/edit.png" alt="" width={16} height={16}/>
-                    </button>
-                    </Link>
-                    {role ==="admin" &&
-                    (
-                    // <button className="w-7 h-7 flex items-center justify-center rounded-full bg-Apurple">
-                    //     <Image src="/delete.png" alt="" width={16} height={16}/>
-                    // </button>
-                    <FormModel table="lesson" type="delete" id={item.id}/>
-
-                )}
+                {role === "admin" &&
+                        (<>
+                            <FormModel table="lesson" type="update" data={item} />
+                            <FormModel table="lesson" type="delete" id={item.id} />
+                        </>
+                        )}
                 </div>
             </td>
         </tr>
@@ -80,9 +90,6 @@ const LessonsListPAge = () => {
                         </button>
                         {role ==="admin" &&
                     (
-                    // <button className="w-8 h-8 flex items-center justify-center rounded-full bg-Ayellow">
-                    //         <Image src="/plus.png" alt="" width={14} height={14} />
-                    //     </button>
                     <FormModel table="lesson" type="create" />
                     )}
                     </div>
