@@ -1,4 +1,5 @@
 // import Link from "next/link";
+import { UserButton } from '@clerk/nextjs';
 import Image from 'next/image';
 
 const Navbar = () => {
@@ -20,11 +21,12 @@ const Navbar = () => {
                         1
                     </div>
                 </div>
-                <div className="flex flex-col ">
+                {/* <div className="flex flex-col ">
                     <span className='text-xs leading-3 font-medium'>Aditya</span>
                     <span className='text-[10px] text-gray-500 text-right'>Admin</span>
-                </div>
-                <Image src="/avatar.png" alt="" width={36} height={36} className='rounded-full' />
+                </div> */}
+                {/* <Image src="/avatar.png" alt="" width={36} height={36} className='rounded-full' /> */}
+                <UserButton/>
             </div>
         </div>
     )

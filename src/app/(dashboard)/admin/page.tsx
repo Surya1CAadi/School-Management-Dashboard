@@ -1,11 +1,15 @@
 import CountChart from "@/components/CountChart";
 import UserCard from "@/components/UserCard";
-import AttendanceChart from "../../../components/AttendenceChart";
 import FinanceChart from "@/components/FinanceChart";
 import EventCalendar from "@/components/EventCalendar";
 import Announcements from "@/components/Announcement";
+import AttendanceChart from "@/components/AttendenceChart";
 
 const AdminPage = () => {
+    console.log("Rendering AdminPage");
+    console.log("UserCard:", UserCard);
+    console.log("CountChart:", CountChart);
+    console.log("AttendanceChart:", AttendanceChart);
     return (
         <div className='p-4 flex gap-4 flex-col md:flex-row'>
             {/* LEFT */}
@@ -42,4 +46,4 @@ const AdminPage = () => {
         </div>
     );
 }
-export default AdminPage
+export default AdminPage;

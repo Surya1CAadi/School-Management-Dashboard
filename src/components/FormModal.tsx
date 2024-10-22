@@ -2,6 +2,7 @@
 
 import dynamic from "next/dynamic";
 import Image from "next/image";
+import React from "react";
 import { useState } from "react";
 // import TeacherForm from "./Forms/teacherForm";
 // import StudentForm from "./Forms/studentForm";
@@ -36,7 +37,7 @@ const FormModel = ({ table, type, data, id }: {
     | "announcement";
     type: "create" | "delete" | "update";
     data?: any;
-    id?: number;
+    id?: number|string;
 }) => {
     const size = type === "create" ? "w-8 h-8" : "w-7 h-7";
     const bgColor = type === "create" ? "bg-Ayellow"

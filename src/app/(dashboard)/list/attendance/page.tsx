@@ -2,7 +2,7 @@ import Pagination from "@/components/Pagination";
 import TableSearch from "@/components/TableSearch";
 import Table from "@/components/Table";
 import Image from "next/image";
-import Link from "next/link";
+import React from "react";
 import { role, attendanceData } from "@/lib/data";
 import FormModel from "@/components/FormModal";
 
@@ -125,7 +125,7 @@ const AttendanceListPage = () => {
             {/* LIST */}
             <Table columns={columns()} renderRow={renderRow} data={attendanceData} />
             {/* PAGINATION  */}
-            <Pagination />
+            {/* <Pagination page={p} count={count} /> */}
         </div>
     );
 };
